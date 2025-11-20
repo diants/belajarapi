@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Countdown ke Jam 16:00</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #1f1c2c, #928dab);
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    flex-direction: column;
+  }
+
+  h1 {
+    margin-bottom: 40px;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+  }
+
+  #countdown {
+    display: flex;
+    gap: 20px;
+    font-size: 4rem;
+  }
+
+  .time-box {
+    background: rgba(255,255,255,0.1);
+    padding: 20px 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    transition: background 0.5s, transform 0.3s;
+  }
+
+  .time-box.urgent {
+    background: rgba(255,50,50,0.8);
+    transform: scale(1.1);
+  }
+
+  .label {
+    font-size: 1rem;
+    text-align: center;
+    margin-top: 5px;
+    color: #ddd;
+  }
+</style>
+</head>
+<body>
+
+<h1>Countdown ke Jam 16:00</h1>
+<div id="countdown">
+  <div class="time-box" id="hours">
+    00
+    <div class="label">Jam</div>
+  </div>
+  <div class="time-box" id="minutes">
+    00
+    <div class="label">Menit</div>
+  </div>
+  <div class="time-box" id="seconds">
+    00
+    <div class="label">Detik</div>
+  </div>
+</div>
+
+<script>
+function updateCountdown() {
+    let now = new Date();
+
+    let target = new Date();
+    target.setHours(16,0,0,0);
+    if(now > target){
+        target.setDate(target.getDate() + 1);
+    }
+
+    let diff = target - now;
+    let hours = Math.floor(diff / (1000*60*60));
+    let minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
+    let seconds = Math.floor((diff % (1000*60)) / 1000);
+
+    document.getElementById('hours').textContent = hours.toString().padStart(2,'0');
+    document.getElementById('minutes').textContent = minutes.toString().padStart(2,'0');
+    document.getElementById('seconds').textContent = seconds.toString().padStart(2,'0');
+
+    // Tambahkan kelas urgent jika kurang dari 1 jam
+    let boxes = document.querySelectorAll('.time-box');
+    if(hours === 0){
+        boxes.forEach(box => box.classList.add('urgent'));
+    } else {
+        boxes.forEach(box => box.classList.remove('urgent'));
+    }
+}
+
+// Update setiap detik
+setInterval(updateCountdown, 1000);
+updateCountdown();
+</script>
+
+</body>
+</html>
